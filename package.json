@@ -10,6 +10,9 @@
     "predeploy": "npm audit",
     "deploy": "git push heroku master"
   },
+  "engines": {
+    "node": "12.6.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
