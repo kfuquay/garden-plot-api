@@ -35,6 +35,7 @@ describe(`plots endpoints`, function() {
       });
     });
 
+    //TODO: debug - currently returns null as plot.id
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
