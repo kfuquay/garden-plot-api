@@ -6,13 +6,13 @@ function makeUsersArray() {
     {
       id: 1,
       username: "dunder",
-      password: "dunder",
+      password: "dunder"
     },
     {
       id: 2,
       username: "test",
-      password: "test",
-    },
+      password: "test"
+    }
   ];
 }
 
@@ -20,50 +20,71 @@ function makePlotsArray() {
   return [
     {
       id: 1,
-      plotName: "First test plot!",
-      plotNotes: "yep",
-
+      plotname: "First test plot!",
+      plotnotes: "yep"
     },
     {
       id: 2,
-      plotName: "Second test plot!",
-      plotNotes: "yep",
+      plotname: "Second test plot!",
+      plotnotes: "yep"
     },
     {
-        id: 3,
-      plotName: "Third test plot!",
-      plotNotes: "yep",
+      id: 3,
+      plotname: "Third test plot!",
+      plotnotes: "yep"
     },
     {
-     id: 4,
-      plotName: "Fourth test plot!",
-      plotNotes: "yep",
-    },
+      id: 4,
+      plotname: "Fourth test plot!",
+      plotnotes: "yep"
+    }
   ];
 }
 
+const expectedPlots = [
+  {
+    id: 1,
+    plotname: "First test plot!",
+    plotnotes: "yep"
+  },
+  {
+    id: 2,
+    plotname: "Second test plot!",
+    plotnotes: "yep"
+  },
+  {
+    id: 3,
+    plotname: "Third test plot!",
+    plotnotes: "yep"
+  },
+  {
+    id: 4,
+    plotname: "Fourth test plot!",
+    plotnotes: "yep"
+  }
+];
 function makeMaliciousPlot() {
   const maliciousPlot = {
     id: 911,
     plotName: 'Naughty naughty very naughty <script>alert("xss");</script>',
-    plotNotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+    plotNotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   };
   const expectedPlot = {
     ...maliciousPlot,
     title:
       'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-    summary: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+    summary: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
   };
   return {
-    maliciousProject,
-    expectedProject,
+    maliciousPlot,
+    expectedPlot
   };
 }
 
 function makePlotsFixtures() {
   const testUsers = makeUsersArray();
-  const testProjects = makePlotsArray(testUsers);
-  return { testUsers, testProjects };
+  const testPlots = makePlotsArray(testUsers);
+  return { testUsers, testPlots };
 }
 
 function cleanTables(db) {
@@ -76,7 +97,7 @@ function cleanTables(db) {
 function seedUsers(db, users) {
   const preppedUsers = users.map(user => ({
     ...user,
-    password: bcrypt.hashSync(user.password, 1),
+    password: bcrypt.hashSync(user.password, 1)
   }));
   return db
     .into("users")
@@ -90,7 +111,7 @@ function seedUsers(db, users) {
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.username,
-    algorithm: "HS256",
+    algorithm: "HS256"
   });
   return `Bearer ${token}`;
 }
@@ -101,5 +122,7 @@ module.exports = {
   cleanTables,
   makePlotsFixtures,
   makeUsersArray,
-  makeMaliciousPlot
+  makeMaliciousPlot,
+  makePlotsArray,
+  expectedPlots
 };
