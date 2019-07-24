@@ -4,5 +4,5 @@ CREATE TABLE crops (
     cropName TEXT NOT NULL,
     datePlanted DATE,
     dateHarvested DATE,
-    notes TEXT
+    cropNotes TEXT
 );
