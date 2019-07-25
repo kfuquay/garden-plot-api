@@ -29,6 +29,28 @@ plotsRouter
         res.json(plots.map(serializePlot));
       })
       .catch(next);
+  })
+
+  //TODO: write tests for post method
+  .post(requireAuth, jsonParser, (req, res, next) => {
+    const { plotname, id, plotnotes, crops, user_id, plotid } = req.body;
+    const newPlot = { id, plotname, plotnotes, user_id };
+    const newCrops = { crops, plotid };
+
+    if (!plotname) {
+      return res.status(400).json({
+        error: { message: `Missing 'plot name' in request body` }
+      });
+    }
+
+    ProjectsService.insertProject(req.app.get("db"), newPlot, newCrops)
+      .then(plot => {
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${plot.id}`))
+          .json(serializePlot(plot));
+      })
+      .catch(next);
   });
 
 module.exports = plotsRouter;

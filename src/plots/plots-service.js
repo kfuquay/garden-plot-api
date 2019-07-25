@@ -15,6 +15,20 @@ const PlotsService = {
       .from("plots")
       .leftJoin("crops", "crops.plotid", "plots.id")
       .leftJoin("users", "plots.user_id", "users.id");
+  },
+  insertPlot(knex, newPlot, newCrops) {
+    return knex
+      .insert(newPlot)
+      .into("plots")
+      .returning("*")
+      .then(([plot]) => plot)
+      .then(
+        knex
+          .insert(newCrops)
+          .into("crops")
+          .returning("*")
+          .then(([crop]) => crop)
+      );
   }
 };
 

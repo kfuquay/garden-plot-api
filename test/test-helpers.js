@@ -124,17 +124,28 @@ const expectedPlots = [
 function makeMaliciousPlot() {
   const maliciousPlot = {
     id: 911,
-    plotName: 'Naughty naughty very naughty <script>alert("xss");</script>',
-    plotNotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
+    plotname: 'Naughty naughty very naughty <script>alert("xss");</script>',
+    plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
+  };
+  const maliciousCrops = {
+    cropname: 'Naughty naughty very naughty <script>alert("xss");</script>',
+    cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z"
   };
   const expectedPlot = {
     ...maliciousPlot,
-    title:
+    ...maliciousCrops,
+    plotname:
       'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-    summary: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
+    plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
+    cropname:
+      'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
+    cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
   };
   return {
     maliciousPlot,
+    maliciousCrops,
     expectedPlot
   };
 }

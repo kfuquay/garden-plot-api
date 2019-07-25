@@ -59,5 +59,31 @@ describe(`plots endpoints`, function() {
           .expect(200, expectedPlots);
       });
     });
+    context("Given an XSS attack plot", () => {
+      const {
+        maliciousPlot,
+        maliciousCrops,
+        expectedPlot
+      } = makeMaliciousPlot();
+
+      beforeEach("insert malicious plot", () => {
+        return db
+          .into("plots")
+          .insert([maliciousPlot])
+          .then(() => {
+            return db.into("crops").insert(maliciousCrops);
+          });
+      });
+
+      it("removes XSS attack content", () => {
+        return supertest(app)
+          .get(`/api/plots`)
+          .expect(200)
+          .expect(res => {
+            expect(res.body[0].plotname).to.eql(expectedPlot.plotname);
+            expect(res.body[0].plotnotes).to.eql(expectedPlot.plotnotes);
+          });
+      });
+    });
   });
 });
