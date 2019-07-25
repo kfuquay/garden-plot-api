@@ -21,22 +21,59 @@ function makePlotsArray() {
     {
       id: 1,
       plotname: "First test plot!",
-      plotnotes: "yep"
+      plotnotes: "yep",
+      user_id: 1
     },
     {
       id: 2,
       plotname: "Second test plot!",
-      plotnotes: "yep"
+      plotnotes: "yep",
+      user_id: 1
     },
     {
       id: 3,
       plotname: "Third test plot!",
-      plotnotes: "yep"
+      plotnotes: "yep",
+      user_id: 2
     },
     {
       id: 4,
       plotname: "Fourth test plot!",
-      plotnotes: "yep"
+      plotnotes: "yep",
+      user_id: 2
+    }
+  ];
+}
+
+function makeCropsArray() {
+  return [
+    {
+      cropname: "corn",
+      dateplanted: "2018-1-9",
+      dateharvested: "2018-2-9",
+      cropnotes: "lorem",
+      plotid: 1
+    },
+    {
+      cropname: "corn",
+      dateplanted: "2018-1-9",
+      dateharvested: "2018-2-9",
+      cropnotes: "lorem",
+      plotid: 2
+    },
+    {
+      cropname: "corn",
+      dateplanted: "2018-1-9",
+      dateharvested: "2018-2-9",
+      cropnotes: "lorem",
+      plotid: 3
+    },
+    {
+      cropname: "corn",
+      dateplanted: "2018-1-9",
+      dateharvested: "2018-2-9",
+      cropnotes: "lorem",
+      plotid: 4
     }
   ];
 }
@@ -45,24 +82,45 @@ const expectedPlots = [
   {
     id: 1,
     plotname: "First test plot!",
-    plotnotes: "yep"
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "dunder"
   },
   {
     id: 2,
     plotname: "Second test plot!",
-    plotnotes: "yep"
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "dunder"
   },
   {
     id: 3,
     plotname: "Third test plot!",
-    plotnotes: "yep"
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "test"
   },
   {
     id: 4,
     plotname: "Fourth test plot!",
-    plotnotes: "yep"
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "test"
   }
 ];
+
 function makeMaliciousPlot() {
   const maliciousPlot = {
     id: 911,
@@ -124,5 +182,6 @@ module.exports = {
   makeUsersArray,
   makeMaliciousPlot,
   makePlotsArray,
+  makeCropsArray,
   expectedPlots
 };

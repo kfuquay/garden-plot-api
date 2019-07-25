@@ -11,16 +11,12 @@ const jsonParser = express.json();
 const serializePlot = plot => ({
   id: plot.id,
   plotname: xss(plot.plotname),
-  plotnotes: xss(plot.plotnotes)
-});
-
-const serializeCrop = crop => ({
-  id: crop.id,
-  plotid: crop.plotId,
-  cropname: xss(crop.cropName),
-  dateplanted: crop.datePlanted,
-  dateharvested: crop.dateHarvested,
-  cropnotes: xss(crop.cropNotes)
+  plotnotes: xss(plot.plotnotes),
+  cropname: xss(plot.cropname),
+  dateplanted: plot.dateplanted,
+  dateharvested: plot.dateharvested,
+  cropnotes: xss(plot.cropnotes),
+  username: xss(plot.username)
 });
 
 plotsRouter

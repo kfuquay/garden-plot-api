@@ -6,7 +6,7 @@ const PlotsService = {
         "plots.plotname",
         "plots.plotnotes",
         "crops.cropname",
-        "crops.id",
+        // "crops.id",
         "crops.dateplanted",
         "crops.dateharvested",
         "crops.cropnotes",

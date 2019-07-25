@@ -5,6 +5,7 @@ const {
   makePlotsArray,
   makeMaliciousPlot,
   makeUsersArray,
+  makeCropsArray,
   expectedPlots
 } = require("./test-helpers");
 const helpers = require("./test-helpers");
@@ -35,10 +36,10 @@ describe(`plots endpoints`, function() {
       });
     });
 
-    //TODO: debug - currently returns null as plot.id
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
+      const testCrops = makeCropsArray();
 
       beforeEach("insert plots", () => {
         return db
@@ -46,6 +47,9 @@ describe(`plots endpoints`, function() {
           .insert(testUsers)
           .then(() => {
             return db.into("plots").insert(testPlots);
+          })
+          .then(() => {
+            return db.into("crops").insert(testCrops);
           });
       });
 
