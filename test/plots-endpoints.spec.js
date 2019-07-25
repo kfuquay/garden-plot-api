@@ -86,4 +86,48 @@ describe(`plots endpoints`, function() {
       });
     });
   });
+  describe(`GET /api/plots/:plot_id`, () => {
+    context("Given no plots", () => {
+      it("responds with 404", () => {
+        const plotId = 123455;
+        return supertest(app)
+          .get(`/api/plots/${plotId}`)
+          .expect(404, { error: { message: `Plot does not exist` } });
+      });
+    });
+    context("Given there are plots in the database", () => {
+      const testUsers = makeUsersArray();
+      const testPlots = makePlotsArray();
+      const testCrops = makeCropsArray();
+
+      beforeEach("insert plots", () => {
+        return db
+          .into("users")
+          .insert(testUsers)
+          .then(() => {
+            return db.into("plots").insert(testPlots);
+          })
+          .then(() => {
+            return db.into("crops").insert(testCrops);
+          });
+      });
+
+      it("responds with 200 and the specified plot", () => {
+        const plotId = 2;
+        const expectedPlot =   {
+          id: 2,
+          plotname: "Second test plot!",
+          plotnotes: "yep",
+          cropname: "corn",
+          dateplanted: "2018-01-09T00:00:00.000Z",
+          dateharvested: "2018-02-09T00:00:00.000Z",
+          cropnotes: "lorem",
+          username: "dunder"
+        }
+        return supertest(app)
+          .get(`/api/plots/${plotId}`)
+          .expect(200, expectedPlot);
+      });
+    });
+  });
 });

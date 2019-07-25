@@ -53,4 +53,22 @@ plotsRouter
       .catch(next);
   });
 
+plotsRouter
+  .route("/:plot_id")
+  .all((req, res, next) => {
+    PlotsService.getById(req.app.get("db"), req.params.plot_id)
+      .then(plot => {
+        if (!plot) {
+          return res.status(404).json({
+            error: { message: `Plot does not exist` }
+          });
+        }
+        res.plot = plot;
+        next();
+      })
+      .catch(next);
+  })
+  .get((req, res, next) => {
+    res.json(serializePlot(res.plot));
+  });
 module.exports = plotsRouter;
