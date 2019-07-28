@@ -19,25 +19,25 @@ function makeUsersArray() {
 function makePlotsArray() {
   return [
     {
-      id: 1,
+      plotid: 1,
       plotname: "First test plot!",
       plotnotes: "yep",
       user_id: 1
     },
     {
-      id: 2,
+      plotid: 2,
       plotname: "Second test plot!",
       plotnotes: "yep",
       user_id: 1
     },
     {
-      id: 3,
+      plotid: 3,
       plotname: "Third test plot!",
       plotnotes: "yep",
       user_id: 2
     },
     {
-      id: 4,
+      plotid: 4,
       plotname: "Fourth test plot!",
       plotnotes: "yep",
       user_id: 2
@@ -80,7 +80,7 @@ function makeCropsArray() {
 
 const expectedPlots = [
   {
-    id: 1,
+    plotid: 1,
     plotname: "First test plot!",
     plotnotes: "yep",
     cropname: "corn",
@@ -90,7 +90,7 @@ const expectedPlots = [
     username: "dunder"
   },
   {
-    id: 2,
+    plotid: 2,
     plotname: "Second test plot!",
     plotnotes: "yep",
     cropname: "corn",
@@ -100,7 +100,7 @@ const expectedPlots = [
     username: "dunder"
   },
   {
-    id: 3,
+    plotid: 3,
     plotname: "Third test plot!",
     plotnotes: "yep",
     cropname: "corn",
@@ -110,7 +110,40 @@ const expectedPlots = [
     username: "test"
   },
   {
-    id: 4,
+    plotid: 4,
+    plotname: "Fourth test plot!",
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "test"
+  }
+];
+
+const expectedDeleteResults = [
+  {
+    plotid: 1,
+    plotname: "First test plot!",
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "dunder"
+  },
+  {
+    plotid: 3,
+    plotname: "Third test plot!",
+    plotnotes: "yep",
+    cropname: "corn",
+    dateplanted: "2018-01-09T00:00:00.000Z",
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    cropnotes: "lorem",
+    username: "test"
+  },
+  {
+    plotid: 4,
     plotname: "Fourth test plot!",
     plotnotes: "yep",
     cropname: "corn",
@@ -123,7 +156,7 @@ const expectedPlots = [
 
 function makeMaliciousPlot() {
   const maliciousPlot = {
-    id: 911,
+    plotid: 911,
     plotname: 'Naughty naughty very naughty <script>alert("xss");</script>',
     plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   };
@@ -131,7 +164,8 @@ function makeMaliciousPlot() {
     cropname: 'Naughty naughty very naughty <script>alert("xss");</script>',
     cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
     dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z"
+    dateharvested: "2018-02-09T00:00:00.000Z",
+    plotid: 911
   };
   const expectedPlot = {
     ...maliciousPlot,
@@ -194,5 +228,6 @@ module.exports = {
   makeMaliciousPlot,
   makePlotsArray,
   makeCropsArray,
-  expectedPlots
+  expectedPlots,
+  expectedDeleteResults
 };
