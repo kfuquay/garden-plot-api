@@ -160,6 +160,12 @@ function makeMaliciousPlot() {
     plotname: 'Naughty naughty very naughty <script>alert("xss");</script>',
     plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   };
+  const expectedPlotOnly = {
+    plotid: 911,
+    plotname:
+      'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
+    plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
+  };
   const maliciousCrops = {
     cropname: 'Naughty naughty very naughty <script>alert("xss");</script>',
     cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
@@ -180,7 +186,8 @@ function makeMaliciousPlot() {
   return {
     maliciousPlot,
     maliciousCrops,
-    expectedPlot
+    expectedPlot,
+    expectedPlotOnly
   };
 }
 

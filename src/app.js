@@ -8,7 +8,7 @@ const { NODE_ENV } = require("./config");
 const usersRouter = require("./users/users-router");
 const authRouter = require("./auth/auth-router");
 const plotsRouter = require("./plots/plots-router");
-
+const cropsRouter = require("./plots/crops/crops-router");
 const app = express();
 
 const morganOption = NODE_ENV === "production" ? "tiny" : "common";
@@ -20,6 +20,7 @@ app.use(helmet());
 app.use("/api/users", usersRouter);
 app.use("/api/auth", authRouter);
 app.use("/api/plots", plotsRouter);
+app.use("/api/crops", cropsRouter);
 
 app.use(function errorHandler(error, req, res, next) {
   let response;

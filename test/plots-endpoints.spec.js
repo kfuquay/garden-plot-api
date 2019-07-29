@@ -81,7 +81,6 @@ describe(`plots endpoints`, function() {
           .get(`/api/plots`)
           .expect(200)
           .expect(res => {
-            console.log(res.body)
             expect(res.body[0].plotname).to.eql(expectedPlot.plotname);
             expect(res.body[0].plotnotes).to.eql(expectedPlot.plotnotes);
             expect(res.body[0].cropname).to.eql(expectedPlot.plotname);
@@ -90,6 +89,7 @@ describe(`plots endpoints`, function() {
       });
     });
   });
+
   describe(`GET /api/plots/:plot_id`, () => {
     context("Given no plots", () => {
       it("responds with 404", () => {
@@ -162,51 +162,44 @@ describe(`plots endpoints`, function() {
       });
     });
   });
+
   describe(`POST /api/plots`, () => {
     const testUsers = makeUsersArray();
-    const testPlots = makePlotsArray();
 
     beforeEach("insert users", () => {
       return db.into("users").insert(testUsers);
     });
-    //TODO: run following tests
+
     it(`creates a plot, responding with 201 and the new plot`, function() {
-      const newPlot = {
+      const testPlot = {
         plotname: "test plotname",
         plotnotes: "test plotnotes",
-        user_id: 1,
-        crops: [
-          {
-            cropname: "test cropname",
-            cropnotes: "test cropnotes",
-            dateharvested: "2019-8-1",
-            dateplanted: "2019-9-1",
-            //TODO: figure out how to post plot, return plotid, then post crops with plotid...
-          }
-        ]
+        user_id: 1
       };
+
       return supertest(app)
         .post("/api/plots")
         .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-        .send(newPlot)
+        .send(testPlot)
         .expect(201)
         .expect(res => {
-          expect(res.body.plotname).to.eql(newPlot.plotname);
-          expect(res.body.plotnotes).to.eql(newPlot.plotnotes);
-          // expect(res.body.cropname).to.eql(newPlot.crops.cropname);
-          // expect(res.body.cropnotes).to.eql(newPlot.cropnotes);
-          // expect(res.body.dateplanted).to.eql(newPlot.dateplanted);
-          // expect(res.body.dateharvested).to.eql(newPlot.dateharvested);
+          expect(res.body.plotname).to.eql(testPlot.plotname);
+          expect(res.body.plotnotes).to.eql(testPlot.plotnotes);
           expect(res.body).to.have.property("plotid");
           expect(res.headers.location).to.eql(`/api/plots/${res.body.plotid}`);
         })
         .then(postRes =>
           supertest(app)
             .get(`/api/plots/${postRes.body.plotid}`)
-            .expect(postRes.body)
+            .expect(postRes => {
+              expect(postRes.body.plotname).to.eql(testPlot.plotname);
+              expect(postRes.body.plotnotes).to.eql(testPlot.plotnotes);
+              // expect(postRes.body.user_id).to.eql(testPlot.user_id);
+              expect(postRes.body).to.have.property("plotid");
+            })
         );
     });
-    //TODO: run this test
+
     it(`responds with 400 and an error message when the 'plot name' is missing`, () => {
       return supertest(app)
         .post("/api/plots")
@@ -218,22 +211,21 @@ describe(`plots endpoints`, function() {
           error: { message: `Missing 'plot name' in request body` }
         });
     });
-    //TODO: run this test
+
     it("removes XSS attack content from response", () => {
-      const { maliciousPlot, expectedPlot } = makeMaliciousPlot();
+      const { maliciousPlot, expectedPlotOnly } = makeMaliciousPlot();
       return supertest(app)
         .post("/api/plots")
         .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
         .send(maliciousPlot)
         .expect(201)
         .expect(res => {
-          expect(res.body.plotname).to.eql(expectedPlot.plotname);
-          expect(res.body.plotnotes).to.eql(expectedPlot.plotnotes);
-          expect(res.body.cropname).to.eql(expected.plotname);
-          expect(res.body.cropnotes).to.eql(expected.cropnotes);
+          expect(res.body.plotname).to.eql(expectedPlotOnly.plotname);
+          expect(res.body.plotnotes).to.eql(expectedPlotOnly.plotnotes);
         });
     });
   });
+
   describe(`DELETE /api/plots/:plot_id`, () => {
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
@@ -251,7 +243,7 @@ describe(`plots endpoints`, function() {
             return db.into("crops").insert(testCrops);
           });
       });
-      //TODO: debug - returns 401 unauthorized
+
       it("responds with 204 and removes the plot", () => {
         const testUsers = makeUsersArray();
         const idToRemove = 2;
@@ -296,14 +288,13 @@ describe(`plots endpoints`, function() {
             return db.into("crops").insert(testCrops);
           });
       });
-      //TODO: debug - returning unauthorized!
-      const idOfPlotToUpdate = 3;
+
+      const idOfPlotToUpdate = 1;
       const newPlotData = {
         plotname: "new plotname",
-        plotnotes: "new plotnotes",
-        user_id: 1,
-        crops: [{ cropname: "new cropname", cropnotes: "newcropnotes" }]
+        plotnotes: "new plotnotes"
       };
+
       it("returns the plot with updated values", () => {
         return supertest(app)
           .patch(`/api/plots/${idOfPlotToUpdate}`)
@@ -314,11 +305,7 @@ describe(`plots endpoints`, function() {
             expect(res.body.plotname)
               .to.eql(newPlotData.plotname)
               .expect(res.body.plotnotes)
-              .to.eql(newPlotData.plotnotes)
-              .expect(res.body.cropname)
-              .to.eql(newPlotData.cropname)
-              .expect(res.body.cropnotes)
-              .to.eql(newPlotData.cropnotes);
+              .to.eql(newPlotData.plotnotes);
           });
       });
     });

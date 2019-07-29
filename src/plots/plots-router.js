@@ -48,13 +48,9 @@ plotsRouter
       // })
       .catch(next);
   })
-
-  //TODO: test this
   .post(requireAuth, jsonParser, (req, res, next) => {
-    const { plotname, plotid, plotnotes, user_id, crops } = req.body;
-
-    const newPlot = { plotid, plotname, plotnotes, user_id };
-    const newCrops = [crops];
+    const { plotname, plotnotes, user_id } = req.body;
+    const newPlot = { plotname, plotnotes, user_id };
 
     if (!plotname) {
       return res.status(400).json({
@@ -62,12 +58,8 @@ plotsRouter
       });
     }
 
-    //TODO: debug - insertPlot.then is not a function
-
-    PlotsService.insertCrops(req.app.get("db"), newCrops);
-    PlotsService.insertPlot(req.app.get("db"), newPlot)
+    PlotsService.insertPlot(req.app.get("db"), serializePlotOnly(newPlot))
       .then(plot => {
-        console.log(plot[0])
         res
           .status(201)
           .location(path.posix.join(req.originalUrl, `/${plot[0].plotid}`))
@@ -102,28 +94,12 @@ plotsRouter
       .catch(next);
   })
   .patch(requireAuth, jsonParser, (req, res, next) => {
-    const { plotname, plotnotes, plotid, crops } = req.body;
-    // const cropname = req.body.crops.cropname;
-    // const cropnotes = req.body.crops.cropnotes;
-    // const dateharvested = req.body.crops.dateharvested;
-    // const dateplanted = req.body.crops.dateplanted;
-    // const cropid = req.body.crops.cropid,
-    // crops.map(crop => {
-    //   return
-    // })
-    //TODO: group crops by id, update where id matches?
+    const { plotname, plotnotes, plotid } = req.body;
+
     const plotToUpdate = {
       plotname,
       plotnotes,
       plotid
-      // cropid,
-      // cropname,
-      // cropnotes,
-      // dateplanted,
-      // dateharvested
-    };
-    const cropToUpdate = {
-      crops
     };
 
     const numberOfValues = Object.values(plotToUpdate).filter(Boolean).length;
@@ -136,9 +112,9 @@ plotsRouter
 
     PlotsService.updatePlot(
       req.app.get("db"),
-      req.params.plot_id,
-      serializePlot(plotToUpdate),
-      serializeCrops(cropToUpdate)
+      // req.params.plot_id,
+      plotid,
+      serializePlotOnly(plotToUpdate)
     )
       .then(numRowsAffected => {
         res.status(204).end();

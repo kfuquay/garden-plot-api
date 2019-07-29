@@ -39,47 +39,25 @@ const PlotsService = {
       .where({ plotid })
       .delete();
   },
-  //TODO: test insert
   insertPlot(knex, newPlot) {
     return knex
       .insert(newPlot)
       .into("plots")
-      .returning("*")
+      .returning("*");
     // .then(([plot]) => {
     //   plot;
     // });
   },
-  insertCrops(knex, newCrops) {
-    return newCrops.map(crop => {
-      knex
-        .insert(crop)
-        .into("crops")
-        .returning("*");
-      // .then(([crops]) => crops);
-    });
+  insertCrop(knex, newCrop) {
+    return knex
+      .insert(newCrop)
+      .into("crops")
+      .returning("*");
   },
-  updatePlot(knex, id, newPlotFields, cropToUpdate) {
-    cropToUpdate
-      .map((crop, i) => {
-        const cropid = crop.cropid;
-        const fieldsToUpdate = {
-          cropname: crop.cropname,
-          cropnotes: crop.cropnotes,
-          dateplanted: crop.dateplanted,
-          dateharvested: crop.dateharvested
-        };
-        return knex("plots")
-          .where({ cropid })
-          .update(fieldsToUpdate);
-      })
-      .then(() => {
-        return (
-          knex("plots")
-            .where({ id })
-            // .leftJoin("crops", "crops.plotid", "plots.id")
-            .update(newPlotFields)
-        );
-      });
+  updatePlot(knex, plotid, newPlotFields) {
+    return knex("plots")
+      .where({ plotid })
+      .update(newPlotFields);
   }
 };
 
