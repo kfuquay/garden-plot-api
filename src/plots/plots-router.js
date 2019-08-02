@@ -12,28 +12,17 @@ const serializePlot = plot => ({
   plotid: plot.plotid,
   plotname: xss(plot.plotname),
   plotnotes: xss(plot.plotnotes),
-  cropname: xss(plot.cropname),
-  dateplanted: plot.dateplanted,
-  dateharvested: plot.dateharvested,
-  cropnotes: xss(plot.cropnotes),
+  crops: plot.crops,
   username: xss(plot.username)
 });
 
-const serializeCrops = crop => ({
-  cropid: crop.cropid,
-  cropname: xss(crop.cropname),
-  cropnotes: xss(crop.cropnotes),
-  dateharvested: crop.dateharvested,
-  dateplanted: crop.dateplanted
-});
-
-const serializePlotOnly = plot => ({
+const serializePlotTable = plot => ({
   plotid: plot.plotid,
   plotname: xss(plot.plotname),
   plotnotes: xss(plot.plotnotes),
+  crops: plot.crops,
   user_id: plot.user_id
 });
-
 plotsRouter
   .route("/")
   // get all plots, serialize (clean inputs in case of xss attack)
@@ -43,14 +32,12 @@ plotsRouter
       .then(plots => {
         res.json(plots.map(serializePlot));
       })
-      // .then(crops => {
-      //   res.json(crops.map(serializeCrop));
-      // })
       .catch(next);
   })
+
   .post(requireAuth, jsonParser, (req, res, next) => {
-    const { plotname, plotnotes, user_id } = req.body;
-    const newPlot = { plotname, plotnotes, user_id };
+    const { plotname, plotnotes, crops, user_id } = req.body;
+    const newPlot = { plotname, plotnotes, crops, user_id };
 
     if (!plotname) {
       return res.status(400).json({
@@ -58,7 +45,7 @@ plotsRouter
       });
     }
 
-    PlotsService.insertPlot(req.app.get("db"), serializePlotOnly(newPlot))
+    PlotsService.insertPlot(req.app.get("db"), serializePlotTable(newPlot))
       .then(plot => {
         res
           .status(201)
@@ -94,13 +81,8 @@ plotsRouter
       .catch(next);
   })
   .patch(requireAuth, jsonParser, (req, res, next) => {
-    const { plotname, plotnotes, plotid } = req.body;
-
-    const plotToUpdate = {
-      plotname,
-      plotnotes,
-      plotid
-    };
+    const { plotname, plotnotes, plotid, crops } = req.body;
+    const plotToUpdate = { plotname, plotnotes, plotid, crops };
 
     const numberOfValues = Object.values(plotToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
@@ -112,9 +94,8 @@ plotsRouter
 
     PlotsService.updatePlot(
       req.app.get("db"),
-      // req.params.plot_id,
-      plotid,
-      serializePlotOnly(plotToUpdate)
+      plotToUpdate.plotid,
+      serializePlotTable(plotToUpdate)
     )
       .then(numRowsAffected => {
         res.status(204).end();

@@ -1,19 +1,17 @@
 const PlotsService = {
+  //TODO: refactor- would like to return crops as an array of objects
+  //TODO: consider completely changing tables - combining crops and plots to one table... where crops would be type json ?  or enum?
+
   getAllPlots(knex) {
     return knex
       .select(
         "plots.plotid",
         "plots.plotname",
         "plots.plotnotes",
-        "crops.cropname",
-        // "crops.id",
-        "crops.dateplanted",
-        "crops.dateharvested",
-        "crops.cropnotes",
+        "plots.crops",
         "users.username"
       )
       .from("plots")
-      .leftJoin("crops", "crops.plotid", "plots.plotid")
       .leftJoin("users", "plots.user_id", "users.id");
   },
   getById(knex, id) {
@@ -22,16 +20,12 @@ const PlotsService = {
         "plots.plotid",
         "plots.plotname",
         "plots.plotnotes",
-        "crops.cropname",
-        "crops.dateplanted",
-        "crops.dateharvested",
-        "crops.cropnotes",
+        "plots.crops",
         "users.username"
       )
       .from("plots")
       .where("plots.plotid", id)
       .first()
-      .leftJoin("crops", "crops.plotid", "plots.plotid")
       .leftJoin("users", "plots.user_id", "users.id");
   },
   deletePlot(knex, plotid) {
@@ -48,16 +42,11 @@ const PlotsService = {
     //   plot;
     // });
   },
-  insertCrop(knex, newCrop) {
-    return knex
-      .insert(newCrop)
-      .into("crops")
-      .returning("*");
-  },
   updatePlot(knex, plotid, newPlotFields) {
     return knex("plots")
       .where({ plotid })
-      .update(newPlotFields);
+      .update(newPlotFields)
+      .returning("*");
   }
 };
 

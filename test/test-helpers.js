@@ -22,101 +22,91 @@ function makePlotsArray() {
       plotid: 1,
       plotname: "First test plot!",
       plotnotes: "yep",
+        crops:{"crops": [
+          {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+          {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+          {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      ]},
       user_id: 1
     },
     {
       plotid: 2,
       plotname: "Second test plot!",
       plotnotes: "yep",
-      user_id: 1
+      user_id: 1,
+      crops:{"crops": [
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+    ]},
     },
     {
       plotid: 3,
       plotname: "Third test plot!",
       plotnotes: "yep",
-      user_id: 2
+      user_id: 2,
+      crops:{"crops": [
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+    ]},
     },
     {
       plotid: 4,
       plotname: "Fourth test plot!",
       plotnotes: "yep",
-      user_id: 2
+      user_id: 2,
+      crops:{"crops": [
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+    ]},
     }
   ];
 }
-
-function makeCropsArray() {
-  return [
-    {
-      cropname: "corn",
-      dateplanted: "2018-1-9",
-      dateharvested: "2018-2-9",
-      cropnotes: "lorem",
-      plotid: 1
-    },
-    {
-      cropname: "corn",
-      dateplanted: "2018-1-9",
-      dateharvested: "2018-2-9",
-      cropnotes: "lorem",
-      plotid: 2
-    },
-    {
-      cropname: "corn",
-      dateplanted: "2018-1-9",
-      dateharvested: "2018-2-9",
-      cropnotes: "lorem",
-      plotid: 3
-    },
-    {
-      cropname: "corn",
-      dateplanted: "2018-1-9",
-      dateharvested: "2018-2-9",
-      cropnotes: "lorem",
-      plotid: 4
-    }
-  ];
-}
-
 const expectedPlots = [
   {
     plotid: 1,
     plotname: "First test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+      crops:{"crops": [
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+    ]},
     username: "dunder"
   },
   {
     plotid: 2,
     plotname: "Second test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+    crops:{"crops": [
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+  ]},
     username: "dunder"
   },
   {
     plotid: 3,
     plotname: "Third test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+    crops:{"crops": [
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+  ]},
     username: "test"
   },
   {
     plotid: 4,
     plotname: "Fourth test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+    crops:{"crops": [
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+  ]},
     username: "test"
   }
 ];
@@ -126,30 +116,33 @@ const expectedDeleteResults = [
     plotid: 1,
     plotname: "First test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+      crops:{"crops": [
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+        {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+    ]},
     username: "dunder"
   },
   {
     plotid: 3,
     plotname: "Third test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+    crops:{"crops": [
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+  ]},
     username: "test"
   },
   {
     plotid: 4,
     plotname: "Fourth test plot!",
     plotnotes: "yep",
-    cropname: "corn",
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    cropnotes: "lorem",
+    crops:{"crops": [
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+      {"cropname":"test cropname", "cropnotes":"testcropnotes", "dateplanted": "2019-1-9", "dateharvested": "2019-2-9"},
+  ]},
     username: "test"
   }
 ];
@@ -160,34 +153,16 @@ function makeMaliciousPlot() {
     plotname: 'Naughty naughty very naughty <script>alert("xss");</script>',
     plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`
   };
-  const expectedPlotOnly = {
+  const expectedPlot = {
     plotid: 911,
     plotname:
       'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
     plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
   };
-  const maliciousCrops = {
-    cropname: 'Naughty naughty very naughty <script>alert("xss");</script>',
-    cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist" onerror="alert(document.cookie);">. But not <strong>all</strong> bad.`,
-    dateplanted: "2018-01-09T00:00:00.000Z",
-    dateharvested: "2018-02-09T00:00:00.000Z",
-    plotid: 911
-  };
-  const expectedPlot = {
-    ...maliciousPlot,
-    ...maliciousCrops,
-    plotname:
-      'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-    plotnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`,
-    cropname:
-      'Naughty naughty very naughty &lt;script&gt;alert("xss");&lt;/script&gt;',
-    cropnotes: `Bad image <img src="https://url.to.file.which/does-not.exist">. But not <strong>all</strong> bad.`
-  };
+
   return {
     maliciousPlot,
-    maliciousCrops,
-    expectedPlot,
-    expectedPlotOnly
+    expectedPlot
   };
 }
 
@@ -200,7 +175,7 @@ function makePlotsFixtures() {
 function cleanTables(db) {
   return db.raw(
     `TRUNCATE
-    users, crops, plots RESTART IDENTITY CASCADE`
+    users, plots RESTART IDENTITY CASCADE`
   );
 }
 
@@ -234,7 +209,6 @@ module.exports = {
   makeUsersArray,
   makeMaliciousPlot,
   makePlotsArray,
-  makeCropsArray,
   expectedPlots,
   expectedDeleteResults
 };

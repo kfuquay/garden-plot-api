@@ -5,7 +5,6 @@ const {
   makePlotsArray,
   makeMaliciousPlot,
   makeUsersArray,
-  makeCropsArray,
   expectedPlots,
   expectedDeleteResults
 } = require("./test-helpers");
@@ -40,7 +39,6 @@ describe(`plots endpoints`, function() {
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
-      const testCrops = makeCropsArray();
 
       beforeEach("insert plots", () => {
         return db
@@ -48,9 +46,6 @@ describe(`plots endpoints`, function() {
           .insert(testUsers)
           .then(() => {
             return db.into("plots").insert(testPlots);
-          })
-          .then(() => {
-            return db.into("crops").insert(testCrops);
           });
       });
 
@@ -61,19 +56,10 @@ describe(`plots endpoints`, function() {
       });
     });
     context("Given an XSS attack plot", () => {
-      const {
-        maliciousPlot,
-        maliciousCrops,
-        expectedPlot
-      } = makeMaliciousPlot();
+      const { maliciousPlot, expectedPlot } = makeMaliciousPlot();
 
       beforeEach("insert malicious plot", () => {
-        return db
-          .into("plots")
-          .insert([maliciousPlot])
-          .then(() => {
-            return db.into("crops").insert(maliciousCrops);
-          });
+        return db.into("plots").insert([maliciousPlot]);
       });
 
       it("removes XSS attack content", () => {
@@ -83,8 +69,6 @@ describe(`plots endpoints`, function() {
           .expect(res => {
             expect(res.body[0].plotname).to.eql(expectedPlot.plotname);
             expect(res.body[0].plotnotes).to.eql(expectedPlot.plotnotes);
-            expect(res.body[0].cropname).to.eql(expectedPlot.plotname);
-            expect(res.body[0].cropnotes).to.eql(expectedPlot.cropnotes);
           });
       });
     });
@@ -102,7 +86,6 @@ describe(`plots endpoints`, function() {
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
-      const testCrops = makeCropsArray();
 
       beforeEach("insert plots", () => {
         return db
@@ -110,9 +93,6 @@ describe(`plots endpoints`, function() {
           .insert(testUsers)
           .then(() => {
             return db.into("plots").insert(testPlots);
-          })
-          .then(() => {
-            return db.into("crops").insert(testCrops);
           });
       });
 
@@ -122,10 +102,28 @@ describe(`plots endpoints`, function() {
           plotid: 2,
           plotname: "Second test plot!",
           plotnotes: "yep",
-          cropname: "corn",
-          dateplanted: "2018-01-09T00:00:00.000Z",
-          dateharvested: "2018-02-09T00:00:00.000Z",
-          cropnotes: "lorem",
+          crops: {
+            crops: [
+              {
+                cropname: "test cropname",
+                cropnotes: "testcropnotes",
+                dateplanted: "2019-1-9",
+                dateharvested: "2019-2-9"
+              },
+              {
+                cropname: "test cropname",
+                cropnotes: "testcropnotes",
+                dateplanted: "2019-1-9",
+                dateharvested: "2019-2-9"
+              },
+              {
+                cropname: "test cropname",
+                cropnotes: "testcropnotes",
+                dateplanted: "2019-1-9",
+                dateharvested: "2019-2-9"
+              }
+            ]
+          },
           username: "dunder"
         };
         return supertest(app)
@@ -134,19 +132,10 @@ describe(`plots endpoints`, function() {
       });
     });
     context(`Given an XSS attack Plot`, () => {
-      const {
-        maliciousPlot,
-        maliciousCrops,
-        expectedPlot
-      } = makeMaliciousPlot();
+      const { maliciousPlot, expectedPlot } = makeMaliciousPlot();
 
       beforeEach("insert malicious Plot", () => {
-        return db
-          .into("plots")
-          .insert([maliciousPlot])
-          .then(() => {
-            return db.into("crops").insert(maliciousCrops);
-          });
+        return db.into("plots").insert([maliciousPlot]);
       });
 
       it("removes XSS attack content", () => {
@@ -156,8 +145,6 @@ describe(`plots endpoints`, function() {
           .expect(res => {
             expect(res.body.plotname).to.eql(expectedPlot.plotname);
             expect(res.body.plotnotes).to.eql(expectedPlot.plotnotes);
-            expect(res.body.cropname).to.eql(expectedPlot.plotname);
-            expect(res.body.cropnotes).to.eql(expectedPlot.cropnotes);
           });
       });
     });
@@ -194,7 +181,6 @@ describe(`plots endpoints`, function() {
             .expect(postRes => {
               expect(postRes.body.plotname).to.eql(testPlot.plotname);
               expect(postRes.body.plotnotes).to.eql(testPlot.plotnotes);
-              // expect(postRes.body.user_id).to.eql(testPlot.user_id);
               expect(postRes.body).to.have.property("plotid");
             })
         );
@@ -213,15 +199,15 @@ describe(`plots endpoints`, function() {
     });
 
     it("removes XSS attack content from response", () => {
-      const { maliciousPlot, expectedPlotOnly } = makeMaliciousPlot();
+      const { maliciousPlot, expectedPlot } = makeMaliciousPlot();
       return supertest(app)
         .post("/api/plots")
         .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
         .send(maliciousPlot)
         .expect(201)
         .expect(res => {
-          expect(res.body.plotname).to.eql(expectedPlotOnly.plotname);
-          expect(res.body.plotnotes).to.eql(expectedPlotOnly.plotnotes);
+          expect(res.body.plotname).to.eql(expectedPlot.plotname);
+          expect(res.body.plotnotes).to.eql(expectedPlot.plotnotes);
         });
     });
   });
@@ -230,7 +216,6 @@ describe(`plots endpoints`, function() {
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
-      const testCrops = makeCropsArray();
 
       beforeEach("insert plots", () => {
         return db
@@ -238,9 +223,6 @@ describe(`plots endpoints`, function() {
           .insert(testUsers)
           .then(() => {
             return db.into("plots").insert(testPlots);
-          })
-          .then(() => {
-            return db.into("crops").insert(testCrops);
           });
       });
 
@@ -275,7 +257,6 @@ describe(`plots endpoints`, function() {
     context("Given there are plots in the database", () => {
       const testUsers = makeUsersArray();
       const testPlots = makePlotsArray();
-      const testCrops = makeCropsArray();
 
       beforeEach("insert plots", () => {
         return db
@@ -283,21 +264,20 @@ describe(`plots endpoints`, function() {
           .insert(testUsers)
           .then(() => {
             return db.into("plots").insert(testPlots);
-          })
-          .then(() => {
-            return db.into("crops").insert(testCrops);
           });
       });
 
-      const idOfPlotToUpdate = 1;
+      const idToUpdate = 3;
       const newPlotData = {
         plotname: "new plotname",
-        plotnotes: "new plotnotes"
+        plotnotes: "new plotnotes",
+        plotid: 3,
+        crops: { crops: [{ cropname: "newcropname" }] }
       };
 
       it("returns the plot with updated values", () => {
         return supertest(app)
-          .patch(`/api/plots/${idOfPlotToUpdate}`)
+          .patch(`/api/plots/${idToUpdate}`)
           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
           .send(newPlotData)
           .expect(200)
