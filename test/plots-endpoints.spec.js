@@ -253,41 +253,4 @@ describe(`plots endpoints`, function() {
       });
     });
   });
-  describe(`PATCH /api/plots/:plot_id`, () => {
-    context("Given there are plots in the database", () => {
-      const testUsers = makeUsersArray();
-      const testPlots = makePlotsArray();
-
-      beforeEach("insert plots", () => {
-        return db
-          .into("users")
-          .insert(testUsers)
-          .then(() => {
-            return db.into("plots").insert(testPlots);
-          });
-      });
-
-      const idToUpdate = 3;
-      const newPlotData = {
-        plotname: "new plotname",
-        plotnotes: "new plotnotes",
-        plotid: 3,
-        crops: { crops: [{ cropname: "newcropname" }] }
-      };
-
-      it("returns the plot with updated values", () => {
-        return supertest(app)
-          .patch(`/api/plots/${idToUpdate}`)
-          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .send(newPlotData)
-          .expect(200)
-          .expect(res => {
-            expect(res.body.plotname)
-              .to.eql(newPlotData.plotname)
-              .expect(res.body.plotnotes)
-              .to.eql(newPlotData.plotnotes);
-          });
-      });
-    });
-  });
 });

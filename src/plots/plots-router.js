@@ -23,6 +23,7 @@ const serializePlotTable = plot => ({
   crops: plot.crops,
   user_id: plot.user_id
 });
+
 plotsRouter
   .route("/")
   // get all plots, serialize (clean inputs in case of xss attack)
@@ -56,9 +57,9 @@ plotsRouter
   });
 
 plotsRouter
-  .route("/:plot_id")
+  .route("/:plotid")
   .all((req, res, next) => {
-    PlotsService.getById(req.app.get("db"), req.params.plot_id)
+    PlotsService.getById(req.app.get("db"), req.params.plotid)
       .then(plot => {
         if (!plot) {
           return res.status(404).json({
@@ -74,15 +75,16 @@ plotsRouter
     res.json(serializePlot(res.plot));
   })
   .delete(requireAuth, (req, res, next) => {
-    PlotsService.deletePlot(req.app.get("db"), req.params.plot_id)
+    PlotsService.deletePlot(req.app.get("db"), req.params.plotid)
       .then(numRowsAffected => {
         res.status(204).end();
       })
       .catch(next);
   })
   .patch(requireAuth, jsonParser, (req, res, next) => {
-    const { plotname, plotnotes, plotid, crops } = req.body;
-    const plotToUpdate = { plotname, plotnotes, plotid, crops };
+    const { plotname, plotnotes, plotid, crops, user_id } = req.body;
+    const plotToUpdate = { plotname, plotnotes, plotid, crops, user_id };
+    console.log(plotToUpdate);
 
     const numberOfValues = Object.values(plotToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
