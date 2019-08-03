@@ -84,7 +84,6 @@ plotsRouter
   .patch(requireAuth, jsonParser, (req, res, next) => {
     const { plotname, plotnotes, plotid, crops, user_id } = req.body;
     const plotToUpdate = { plotname, plotnotes, plotid, crops, user_id };
-    console.log(plotToUpdate);
 
     const numberOfValues = Object.values(plotToUpdate).filter(Boolean).length;
     if (numberOfValues === 0)
