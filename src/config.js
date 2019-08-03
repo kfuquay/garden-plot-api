@@ -6,7 +6,6 @@ module.exports = {
       "postgresql://dunder:dunder@localhost/garden",
     JWT_SECRET: process.env.JWT_SECRET || "change-this-secret",
     JWT_EXPIRTY: process.env.JWT_EXPIRTY || "5h",
-    // CLIENT_ORIGIN: "https://garden-plot.now.sh",
-    CLIENT_ORIGIN: "http://localhost:3000"
+    CLIENT_ORIGIN: "https://garden-plot.now.sh",
   };
   
