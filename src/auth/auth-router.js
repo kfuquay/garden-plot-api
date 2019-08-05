@@ -12,7 +12,7 @@ authRouter.post("/login", jsonBodyParser, (req, res, next) => {
 
   //check that user has entered values for username and password
   for (const [key, value] of Object.entries(loginUser))
-    if (value == null)
+    if (value === null)
       return res.status(400).json({
         error: `Missing '${key}' in request body`
       });
